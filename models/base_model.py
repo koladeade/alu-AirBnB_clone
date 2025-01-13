@@ -46,7 +46,7 @@ class BaseModel:
         and dict is a string representation of the __dict__ of the instance
         """
 
-        return f"[{self.__class__}] ({self.id}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         
     def save(self):
 
