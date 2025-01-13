@@ -58,6 +58,7 @@ class BaseModel:
         """
 
         self.updated_at = datetime.now()
+        return "OK"
 
     def to_dict(self):
 
