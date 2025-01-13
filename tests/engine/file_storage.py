@@ -18,6 +18,8 @@ class FileStorage:
     A file storage system for storing and retrieving objects.
     """
 
+__all__ = ['FileStorage']
+
     __file_path = "file.json"
     __objects = {}
 
@@ -84,13 +86,13 @@ class FileStorage:
         silently ignored.
 
         """
-        try:
-            with open(FileStorage.__file_path, 'r') as file:
-                rdict = json.load(file)
+       
+       try:
+        with open(FileStorage.__file_path, 'r') as file:
+            rdict = json.load(file)
 
-                for key, value in rdict.items():
-                    self.__objects[key] = eval(
-                        f"{value['__class__']}(**{value})")
+            for key, value in rdict.items():
+                self.__objects[key] = BaseModel.create(**value)
 
-        except FileNotFoundError:
-            pass
+    except FileNotFoundError:
+        pass
