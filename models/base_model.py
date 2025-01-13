@@ -89,7 +89,6 @@ class BaseModel:
         """
         rdict = self.__dict__.copy()
         rdict["__class__"] = self.__class__.__name__
-        for key, value in self.__dict__.items():
-            if key == 'created_at' or key == 'updated_at':
-                value = value.isoformat()
-            rdict[key] = value
+        rdict["created_at"] = self.created_at.isoformat()
+        rdict["updated_at"] = self.updated_at.isoformat()
+        return rdict
