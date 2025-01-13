@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/python3
 #create the base model class with the following attributes:
 #1. id.
