@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #create the base model class with the following attributes:
 #1. id.
 #2. created_at.
@@ -15,6 +16,8 @@ import uuid
 
 
 class BaseModel:
+
+    """This is the basemodel class"""
 
     def __init__(self, *args, **kwargs):
         
