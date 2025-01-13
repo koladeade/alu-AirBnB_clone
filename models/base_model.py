@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/python3
 #create the base model class with the following attributes:
 #1. id.
@@ -11,31 +12,44 @@
 # you can use isoformat() of datetime object
 
 
-
 from datetime import datetime
 import uuid
 
 
 class BaseModel:
-    """This is the Parent Class BaseModel"""
 
-    def __init__(self):
+    """This is the basemodel class"""
 
+    def __init__(self, *args, **kwargs):
+        
+
+        
         """
         Initializes a new instance of the BaseModel class.
 
-        The following attributes are set:
-        * id: a unique identifier (a uuid4 string) for the instance.
-        * created_at: the datetime object representing when the instance was created.
-        * updated_at: the datetime object representing when the instance was last updated.
+        If kwargs is not empty, it iterates over the dictionary and sets the
+        attributes of the instance with the corresponding values from the
+        dictionary. If the key is 'created_at' or 'updated_at', it converts the
+        value to a datetime object using datetime.fromisoformat().
+
+        If kwargs is empty, it sets the id to a new uuid, and the created_at and
+        updated_at to the current datetime.
+
+        It then calls new() in storage to save the instance into the storage.
         """
 
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == 'created_at' or key == 'updated_at':
+                    value = datetime.fromisoformat(value)
+                if key != '__class__':
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
-
         """
         Returns a string representation of the instance.
 
@@ -45,22 +59,18 @@ class BaseModel:
         id is the value of the id attribute of the instance,
         and dict is a string representation of the __dict__ of the instance
         """
-
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         
     def save(self):
-
         """
         Updates the attribute 'updated_at' with the current datetime.
 
         This method is mainly used to keep track of the last time an instance
         was modified. It should be called whenever the instance is changed.
         """
-
         self.updated_at = datetime.now()
 
     def to_dict(self):
-
         """
         Returns a dictionary containing all the attributes of the instance.
 
@@ -78,10 +88,9 @@ class BaseModel:
         instance, so it will not be affected by changes to the instance's
         attributes after the call to to_dict.
         """
-
-        iso_time = "%Y-%m-%dT%H:%M:%S.%f"
         rdict = self.__dict__.copy()
-        rdict["created_at"] = self.created_at.strftime(iso_time)
-        rdict["updated_at"] = self.updated_at.strftime(iso_time)
         rdict["__class__"] = self.__class__.__name__
-        return rdict
+        for key, value in self.__dict__.items():
+            if key == 'created_at' or key == 'updated_at':
+                value = value.isoformat()
+            rdict[key] = value
