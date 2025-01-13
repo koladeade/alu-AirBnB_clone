@@ -58,6 +58,7 @@ class BaseModel:
         """
 
         self.updated_at = datetime.now()
+        self.assertEqual(my_model.save(), "OK")
 
     def to_dict(self):
 
